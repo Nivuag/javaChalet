@@ -6,12 +6,13 @@ import org.iot.raspberry.grovepi.devices.GroveTemperatureAndHumiditySensor;
 import java.io.IOException;
 import java.lang.*;
 
-class Chalet 
+class Chalet implements Runnable
 {
 	
 	private Object Mutex = new Object();
 	private GroveTemperatureAndHumiditySensor Dt;
 	private GroveLightSensor CapteurLumiere;
+	
 	
 	private GroveLed DelR;
 	private GroveLed DelB;
@@ -60,6 +61,7 @@ class Chalet
 		{System.err.println("Probleme de capteur(Temperature,Humidity,Lumiere)");}
 	}
 	
+
 	public void Chauffage(boolean on) throws IOException { DelR.set(on);}
 	
 	public void Climatisation(boolean on)  throws IOException {DelB.set(on);}

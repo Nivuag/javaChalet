@@ -14,15 +14,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class ServeurChalet{
+public class Runnable ServeurChalet{
 	
-	public static final int PORT = 1000;
+	public static final int PORT = 1942;
 	
 	private ServerSocket socServeur;
 	private Socket socClient;
 	
 	private BufferedReader reader;
 	private PrintWriter writer;
+	
+	// Boolean représentant si l'a connexion a écris le bon mot de passe
+	private boolean Verifier = false;
+	
+	
+	private String[5] CommandesPossibles = new String() {"LOGIN","LOGOUT","TEMP","HUM","LUM","TMIN","TMAX","LMIN","FIN"};
 	
 	
 	
@@ -89,12 +95,102 @@ public class ServeurChalet{
 	/// Retourne -> Boolean representant si la connexion est terminer (false si OUI)
 	private boolean Traiter_Donners(String[] commandes)
 	{
+		boolean Valide = false;
+		String Message;
+		foreach(String A : CommandesPossibles)
+		{
+			if(Valide == false)
+				Valide = A.equals(commandes[0].toUpperCase());
+			
+		}
 		
+		if(Valide && Verifier){
+			
+			if(commandes[0].toUpperCase() != "LOGIN" && commandes[0].toUpperCase() != "FIN")
+			{
+				Message = "NAK NOT LOGGED IN";
+			
+			}
+			else if(commandes[0].toUpperCase() == "FIN")
+			{
+				return false;
+			}
+			else if(commandes.length() != 2)
+			{
+				Message = "NAK";
+				
+			}
+			else{
+				VerifierPassword(commandes[1]);
+			}
+			return true;
 		
+		}
+		else if(Valide && !Verifier){
+			
+			switch(commandes[0].toUpperCase()){
+			case "LOGOUT":
+			
+			
+			break;
+			case "TEMP":
+			
+			break;
+			case "HUM":
+			break;
+			case "LUM":
+			break;
+			case "TMIN":
+			break;
+			case "TMAX":
+			break;
+			case "LMIN":
+			break;
+			case "FIN"
+			return false;
+			break;
+			default:
+			
+			
+			}
+			
+			
+		}
+		else{
+			 
+		}
+		
+		writer.write(Message);
+		writer.flush();
+		
+	}
+	
+	/// --- Verifier Mot de Passe ---
+	/// commandes: String -> Mot de Passe reçu
+	/// Resumer -> Confirme si le mot de passe reçu est le bon.
+	/// Retourn -> String : Message de validation à envoyer 
+	private String VerifierPassword(String Password){
+		
+		if(!Password.equals(MotDePasse))
+		{
+			
+			return "NAK Accès refusé";
+			
+		}
+		else{
+			Verifier = true;
+			return "ACK"
+
+		}
 		
 	}
 	
 	
-	
-	
+	/// --- get Temperature ---
+	/// Retourne -> string Contenant la Temperature du Chalet
+	private String getTemperature(){
+		
+		
+		
+	}
 }
